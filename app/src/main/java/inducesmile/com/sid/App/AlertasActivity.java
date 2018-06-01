@@ -1,8 +1,9 @@
 package inducesmile.com.sid.App;
 
+import android.content.Intent;
 import android.database.Cursor;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -14,11 +15,16 @@ import inducesmile.com.sid.R;
 public class AlertasActivity extends AppCompatActivity {
 
     DataBaseHandler db = new DataBaseHandler(this);
+    public static String idCulturaStatic;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alertas);
+        Intent myIntent = getIntent();
+        idCulturaStatic = myIntent.getStringExtra("idCulturaIntent");
         Cursor alertasCursor= getAlertasCursor();
         Cursor culturaCursor = getCulturaCursor();
         updateNomeCultura(culturaCursor);
@@ -27,14 +33,14 @@ public class AlertasActivity extends AppCompatActivity {
 
     public Cursor getCulturaCursor(){
         DataBaseReader dbReader = new DataBaseReader(db);
-        Cursor cursor = dbReader.readCultura();
+        Cursor cursor = dbReader.readCultura(idCulturaStatic);
         return cursor;
     }
 
     public Cursor getAlertasCursor(){
-        //To do
+        //Todo
         DataBaseReader dbReader = new DataBaseReader(db);
-        Cursor cursor = dbReader.readAlertas();
+        Cursor cursor = dbReader.readAlertas(idCulturaStatic);
         return cursor;
     }
     private void updateNomeCultura(Cursor culturaCursor){
@@ -54,9 +60,9 @@ public class AlertasActivity extends AppCompatActivity {
         while (alertasCursor.moveToNext()){
             TableRow row = new TableRow(this);
             row.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-            TextView nomeVariavel = new TextView(this);
-            nomeVariavel.setText(alertasCursor.getString(alertasCursor.getColumnIndex("NomeVariavel")));
-            nomeVariavel.setPadding(dpAsPixels(16),dpAsPixels(5),0,0);
+            //TextView nomeVariavel = new TextView(this);
+            //nomeVariavel.setText(alertasCursor.getString(alertasCursor.getColumnIndex("NomeVariavel")));
+            //nomeVariavel.setPadding(dpAsPixels(16),dpAsPixels(5),0,0);
 
             TextView data = new TextView(this);
             data.setText(alertasCursor.getString(alertasCursor.getColumnIndex("DataMedicao")));
@@ -78,7 +84,7 @@ public class AlertasActivity extends AppCompatActivity {
             alerta.setText(alertasCursor.getString(alertasCursor.getColumnIndex("Alertas")));
             alerta.setPadding(dpAsPixels(16),dpAsPixels(5),20,0);
 
-            row.addView(nomeVariavel);
+            //row.addView(nomeVariavel);
             row.addView(data);
             row.addView(hora);
             row.addView(valor);

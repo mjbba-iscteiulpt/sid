@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -35,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String READ_ALERTAS = "http://" + IP + ":" + PORT + "/getAlertas.php";
     public static final String READ_Cultura = "http://" + IP + ":" + PORT + "/getCultura.php";
 
+    public static EditText idCultura;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,11 +51,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void showAlertas(View v){
         Intent i = new Intent(this,AlertasActivity.class);
+        i.putExtra("idCulturaIntent", idCultura.getText().toString());
         startActivity(i);
     }
 
     public void refreshDB(View v){
-        EditText idCultura = findViewById(R.id.idCultura);
+        idCultura = findViewById(R.id.idCultura);
         if (idCultura.getText() != null){
             writeToDB(idCultura.getText().toString());
             idCultura.onEditorAction(EditorInfo.IME_ACTION_DONE);
@@ -67,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateNumeroMedicoes(){
 
-        //To Dod
+        //ToDo
 
         DataBaseReader dbReader = new DataBaseReader(db);
 
@@ -80,10 +82,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateNumeroAlertas(){
 
-        //To Do
+        //ToDo
         DataBaseReader dbReader = new DataBaseReader(db);
 
-        Cursor cursor = dbReader.readAlertas();
+        Cursor cursor = dbReader.readAlertas(idCultura.getText().toString());
         int totalAlertas = cursor.getCount();
         TextView text = findViewById(R.id.numeroAlertasInt);
         text.setText(Integer.toString(totalAlertas));
@@ -92,11 +94,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateNomeCultura(){
 
-        //To do?
+        //Todo?
         DataBaseReader dbReader = new DataBaseReader(db);
 
         TextView nomeCultura_tv= findViewById(R.id.nomeCultura_tv);
-        Cursor cursor = dbReader.readCultura();
+        Cursor cursor = dbReader.readCultura(idCultura.getText().toString());
         String nomeCultura=null;
         while (cursor.moveToNext()){
             nomeCultura = cursor.getString(cursor.getColumnIndex("NomeCultura"));
@@ -128,7 +130,6 @@ public class MainActivity extends AppCompatActivity {
             JSONArray jsonHumidadeTemperatura = jParser.getJSONFromUrl(READ_HUMIDADE_TEMPERATURA, params);
             db.dbClear();
             if (jsonHumidadeTemperatura !=null){
-                Log.d("Teste", "Entrou");
                 for (int i = 0; i < jsonHumidadeTemperatura.length(); i++) {
                     JSONObject c = jsonHumidadeTemperatura.getJSONObject(i);
                     int idMedicao = c.getInt("idMedicao");
@@ -149,7 +150,8 @@ public class MainActivity extends AppCompatActivity {
                     double valorMedicao = c.getDouble("ValorMedicao");
                     String horaMedicao = c.getString("HoraMedicao");
                     String alerta = c.getString("Alertas");
-                    db.insert_Alertas(IDAlerta,dataMedicao,valorMedicao,horaMedicao,alerta);
+                    int idCulturaAlerta = c.getInt("idCultura");
+                    db.insert_Alertas(IDAlerta,dataMedicao,valorMedicao,horaMedicao,alerta, idCulturaAlerta);
                 }
 
             }
@@ -158,8 +160,9 @@ public class MainActivity extends AppCompatActivity {
             if (jsonCultura!=null){
                 for (int i = 0; i < jsonCultura.length(); i++) {
                     JSONObject c = jsonCultura.getJSONObject(i);
+                    int idC = c.getInt("idCultura");
                     String nomeCultura = c.getString("nomeCultura");
-                    db.insert_Cultura(Integer.parseInt(idCultura),nomeCultura);
+                    db.insert_Cultura(idC,nomeCultura);
                 }
 
             }

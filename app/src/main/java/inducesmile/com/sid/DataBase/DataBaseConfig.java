@@ -11,7 +11,6 @@ public class DataBaseConfig {
     public static class HumidadeTemperatura implements BaseColumns {
         public static final String TABLE_NAME = "HumidadeTemperatura";
         public static final String COLUMN_NAME_IDMEDICAO = "IDMedicao";
-        public static final String COLUMN_NAME_IDCULTURA = "IDCultura";
         public static final String COLUMN_NAME_HORAMEDICAO = "HoraMedicao";
         public static final String COLUMN_NAME_VALORMEDICAOTEMPERATURA = "ValorMedicaoTemperatura";
         public static final String COLUMN_NAME_VALORMEDICAOHUMIDADE = "ValorMedicaoHumidade";
@@ -25,8 +24,8 @@ public class DataBaseConfig {
         public static final String COLUMN_NAME_DATAMEDICAO="DataMedicao";
         public static final String COLUMN_NAME_VALORMEDICAO="ValorMedicao";
         public static final String COLUMN_NAME_HORAMEDICAO="HoraMedicao";
-        public static final String COLUMN_NAME_NOMEVARIAVEL="NomeVariavel";
         public static final String COLUMN_NAME_ALERTAS="Alertas";
+        public static final String COLUMN_NAME_AIDCultura="IdCultura";
     }
 
     public static class Cultura implements BaseColumns{
@@ -39,7 +38,6 @@ public class DataBaseConfig {
     protected static final String SQL_CREATE_HUMIDADE_TEMPERATURA =
             "CREATE TABLE " + HumidadeTemperatura.TABLE_NAME +
                     " (" + HumidadeTemperatura.COLUMN_NAME_IDMEDICAO + " INTEGER PRIMARY KEY," +
-                    HumidadeTemperatura.COLUMN_NAME_IDCULTURA + " INTEGER," +
                     HumidadeTemperatura.COLUMN_NAME_HORAMEDICAO + " TIME," +
                     HumidadeTemperatura.COLUMN_NAME_VALORMEDICAOTEMPERATURA + " INTEGER," +
                     HumidadeTemperatura.COLUMN_NAME_VALORMEDICAOHUMIDADE + " INTEGER," +
@@ -51,7 +49,7 @@ public class DataBaseConfig {
                     Alertas.COLUMN_NAME_DATAMEDICAO + " TIME," +
                     Alertas.COLUMN_NAME_VALORMEDICAO + " INTEGER," +
                     Alertas.COLUMN_NAME_HORAMEDICAO + " TIME," +
-                    Alertas.COLUMN_NAME_NOMEVARIAVEL + " TEXT, "+
+                    Alertas.COLUMN_NAME_AIDCultura + " INTEGER, "+
                     Alertas.COLUMN_NAME_ALERTAS + " TEXT )";
 
 

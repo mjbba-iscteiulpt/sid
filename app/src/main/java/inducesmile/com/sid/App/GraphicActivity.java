@@ -79,7 +79,7 @@ public class GraphicActivity extends AppCompatActivity {
 
     public Cursor getCursor(){
 
-        //To do, ir à base de dados buscar o cursor do dia selecionado.
+        //Todo, ir à base de dados buscar o cursor do dia selecionado.
 
         reader = new DataBaseReader(db);
         Cursor cursor = reader.ReadHumidadeTemperatura("DataMedicao='"+yearString+"-"+monthString+"-"+dayString+"'");

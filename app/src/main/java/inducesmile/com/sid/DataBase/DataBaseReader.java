@@ -22,10 +22,11 @@ public class DataBaseReader {
 
     public Cursor ReadHumidadeTemperatura(String data){
 
-        //To Do
+        //ToDo
         if (data!=null){
             Log.d("dataString",data);
         }
+
 
         Cursor cursor = db.query(
                 DataBaseConfig.HumidadeTemperatura.TABLE_NAME,   // Nome da tabela
@@ -39,14 +40,19 @@ public class DataBaseReader {
         return cursor;
     }
 
-    public Cursor readAlertas(){
+    public Cursor readAlertas(String idCultura){
 
-        //To do
+        String[] tableColumns = new String[] {
+                DataBaseConfig.Alertas.COLUMN_NAME_IDALERTA
+        };
+        String where = DataBaseConfig.Alertas.COLUMN_NAME_AIDCultura+" = ?";
+        String[] whereArgs = new String[] {idCultura};
+        //Todo
         Cursor cursor = db.query(
                 DataBaseConfig.Alertas.TABLE_NAME,   // Nome da tabela
                 null,
-                null,
-                null,
+                where,
+                whereArgs,
                 null,
                 null,
                 null
@@ -54,13 +60,16 @@ public class DataBaseReader {
         return cursor;
     }
 
-    public Cursor readCultura(){
-        //To do
+    public Cursor readCultura(String idCultura){
+        //Todo
+
+        String where = DataBaseConfig.Cultura.COLUMN_NAME_IDCULTURA+" = ?";
+        String[] whereArgs = new String[] {idCultura};
         Cursor cursor = db.query(
                 DataBaseConfig.Cultura.TABLE_NAME,   // Nome da tabela
                 null,
-                null,
-                null,
+                where,
+                whereArgs,
                 null,
                 null,
                 null
