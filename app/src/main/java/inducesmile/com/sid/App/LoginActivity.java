@@ -83,6 +83,20 @@ public class LoginActivity extends AppCompatActivity {
             Intent i = new Intent(this, MainActivity.class);
             startActivity(i);
             finish();
+        } else if (response.contains("Database server not found")) {
+            response = "Servidor em baixo";
+            TextView alertaLogin= findViewById(R.id.alertaLogin);
+            alertaLogin.setText(response);
+            alertaLogin.setVisibility(View.VISIBLE);
+        } else if (response.contains("Invalid user ID or password")) {
+            response = "User ou password invalidos";
+            TextView alertaLogin= findViewById(R.id.alertaLogin);
+            alertaLogin.setText(response);
+            alertaLogin.setVisibility(View.VISIBLE);
+        } else {
+            TextView alertaLogin= findViewById(R.id.alertaLogin);
+            alertaLogin.setText(response);
+            alertaLogin.setVisibility(View.VISIBLE);
         }
     }
 
