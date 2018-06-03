@@ -27,12 +27,12 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String IP = UserLogin.getInstance().getIp();
     private static final String PORT = UserLogin.getInstance().getPort();
-    private static final String username= UserLogin.getInstance().getUsername();
-    private static final String password = UserLogin.getInstance().getPassword();
+    public static final String username= UserLogin.getInstance().getUsername();
+    public static final String password = UserLogin.getInstance().getPassword();
     DataBaseHandler db = new DataBaseHandler(this);
-    public static final String READ_HUMIDADE_TEMPERATURA = "http://" + IP + ":" + PORT + "/getHumidade_Temperatura.php";
-    public static final String READ_ALERTAS = "http://" + IP + ":" + PORT + "/getAlertas.php";
-    public static final String READ_Cultura = "http://" + IP + ":" + PORT + "/getCultura.php";
+    public static final String READ_HUMIDADE_TEMPERATURA = "http://" + IP + ":" + PORT + "/getHumidade_Temperatura.php?user="+username+"&pass="+password;
+    public static final String READ_ALERTAS = "http://" + IP + ":" + PORT + "/getAlertas.php?user="+username+"&pass="+password;
+    public static String READ_Cultura;
 
     public static EditText idCultura;
 
@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateNumeroMedicoes(){
 
-        //ToDo
 
         DataBaseReader dbReader = new DataBaseReader(db);
 
@@ -82,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateNumeroAlertas(){
 
-        //ToDo
         DataBaseReader dbReader = new DataBaseReader(db);
 
         Cursor cursor = dbReader.readAlertas(idCultura.getText().toString());
@@ -94,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateNomeCultura(){
 
-        //Todo?
         DataBaseReader dbReader = new DataBaseReader(db);
 
         TextView nomeCultura_tv= findViewById(R.id.nomeCultura_tv);
@@ -127,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
             params.put("password", password);
             params.put("idCultura",idCultura);
             ConnectionHandler jParser = new ConnectionHandler();
+            READ_Cultura = "http://" + IP + ":" + PORT + "/getCultura.php?user="+username+"&pass="+password+"&id="+idCultura;
             JSONArray jsonHumidadeTemperatura = jParser.getJSONFromUrl(READ_HUMIDADE_TEMPERATURA, params);
             db.dbClear();
             if (jsonHumidadeTemperatura !=null){
